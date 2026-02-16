@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zactonics AI Agent Hub</title>
+<title>Zactonics AI Agent Small Business Hub — Standalone Static</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -42,7 +42,7 @@ body::before{content:'';position:fixed;top:-50%;left:-50%;width:200%;height:200%
 <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 via-purple-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-blue-500/20">
 <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
 </div>
-<div><h1 class="text-lg font-bold leading-tight"><span class="logo-text">Zactonics</span> <span class="text-white">AI Agent Hub</span></h1>
+<div><h1 class="text-lg font-bold leading-tight"><span class="logo-text">Zactonics</span> <span class="text-white">AI Agent Small Business Hub</span></h1>
 <p class="text-[10px] text-gray-500 mono tracking-wider">MULTI-AGENT COMMAND CENTER</p></div>
 </div>
 <div class="flex items-center gap-3">
@@ -177,22 +177,86 @@ sm:[
 
 
 const ACT=[
-{a:"cs",x:"Resolved ticket #TK-4918",t:"2 min ago",s:"success"},
-{a:"tx",x:"Alabama monthly filing prepared — $4,812",t:"3 min ago",s:"success"},
-{a:"sl",x:"Qualified lead: DataVault Inc",t:"5 min ago",s:"success"},
-{a:"pl",x:"January 2026 P&L statement generated",t:"6 min ago",s:"success"},
-{a:"fo",x:"Categorized 12 new transactions",t:"8 min ago",s:"success"},
-{a:"co",x:"Published blog post to CMS",t:"15 min ago",s:"success"},
-{a:"tx",x:"\u26a0 2 new state nexus thresholds approaching",t:"18 min ago",s:"warning"},
-{a:"cs",x:"Escalated ticket #TK-4920 to Sarah M.",t:"22 min ago",s:"warning"},
-{a:"pl",x:"Gross margin alert: crossed 72%",t:"25 min ago",s:"info"},
-{a:"sl",x:"Drafted follow-up emails for 3 leads",t:"30 min ago",s:"success"},
-{a:"tx",x:"Found $2,400 in missed meal deductions",t:"35 min ago",s:"info"},
-{a:"fo",x:"\u26a0 Flagged overdue invoice INV-1089",t:"45 min ago",s:"warning"},
-{a:"pl",x:"Q4 financial filing package ready for CPA",t:"50 min ago",s:"success"},
-{a:"co",x:"Detected trending topic: AI Orchestration",t:"1 hr ago",s:"info"},
-{a:"tx",x:"Q4 estimated tax payment: $24,525",t:"1.5 hr ago",s:"success"},
-{a:"pl",x:"DSO trending up: 38 to 42 days",t:"2 hr ago",s:"warning"}
+{a:"cs",x:"Resolved ticket #TK-4918",t:"2 min ago",s:"success",
+d:{trigger:"Customer emailed: 'How do I reset my password?'",
+steps:["Received email via Zendesk integration","Intent classified: ACCOUNT_ACCESS (confidence: 98.1%)","Knowledge base searched \u2014 matched FAQ #42","Pre-approved response template selected","Personalized with customer name and account link"],
+result:"Auto-replied with step-by-step password reset guide. Customer confirmed resolved within 4 minutes. No escalation needed.",
+metrics:{"Processing Time":"1.1s","Confidence":"98.1%","Method":"FAQ Auto-Match","Channel":"Email"}}},
+{a:"tx",x:"Alabama monthly filing prepared \u2014 $4,812",t:"3 min ago",s:"success",
+d:{trigger:"Scheduled monthly filing deadline approaching (Feb 20)",
+steps:["Connected to Shopify POS for January Alabama transactions","Aggregated 412 taxable orders in Montgomery & Madison counties","Applied state rate 4.0% + county rates (5.0% Montgomery, 4.5% Madison)","Cross-referenced 3 tax-exempt sales against certificates on file","Generated AL Form ST-1 with line-item breakdown","Validated totals against QuickBooks sales tax liability account"],
+result:"Filing packet ready: $4,812.33 total ($3,180.22 Montgomery Co + $1,632.11 Madison Co). PDF saved to Drive. Reminder set for Feb 20 submission deadline.",
+metrics:{"Transactions":"412","Jurisdictions":"2 counties","Exemptions Applied":"3","Accuracy":"100%"}}},
+{a:"sl",x:"Qualified lead: DataVault Inc",t:"5 min ago",s:"success",
+d:{trigger:"Website visitor from DataVault Inc spent 11 minutes on pricing page, viewed API docs",
+steps:["Visitor detected via Segment tracking pixel","Company enriched via Clearbit: DataVault Inc, Series B, 180 employees, data infrastructure","Behavioral score: 88/100 (pricing + API docs + case studies)","Firmographic match: ICP score 91/100 (tech company, 100-500 employees, Series B)","Combined lead score: 89/100 \u2014 classified HOT","CRM checked: no existing record \u2014 new lead created in HubSpot"],
+result:"Proactive chat initiated. Visitor engaged, shared they need enterprise API access for 50+ team members. Meeting request sent. SDR Alex notified via Slack.",
+metrics:{"Lead Score":"89/100","ICP Match":"91%","Time on Site":"11 min","Pages Viewed":"6"}}},
+{a:"pl",x:"January 2026 P&L statement generated",t:"6 min ago",s:"success",
+d:{trigger:"Month-end close completed for January 2026 (triggered by QuickBooks webhook)",
+steps:["Pulled revenue data from Stripe ($168,400 product + $74,200 service + $45,800 SaaS)","Calculated COGS from inventory system and vendor invoices ($81,200)","Compiled operating expenses by department from QuickBooks GL","Computed gross margin (71.8%), operating margin (20.1%), net margin (19.7%)","Generated MoM comparison vs December 2025 and YoY vs January 2025","Ran variance analysis \u2014 flagged marketing spend down 23% with minimal revenue impact","Produced executive commentary highlighting operating margin crossing 20% milestone"],
+result:"Full P&L statement with 3-period comparison generated. Net income: $56,760 (+6.9% MoM, +50.9% YoY). Report saved to Finance/Monthly folder and emailed to CFO.",
+metrics:{"Revenue":"$288,400","Net Income":"$56,760","Net Margin":"19.7%","Processing":"3.2s"}}},
+{a:"fo",x:"Categorized 12 new transactions",t:"8 min ago",s:"success",
+d:{trigger:"Scheduled bank sync pulled 12 new transactions from Chase Business ($4,280.44)",
+steps:["Connected to Chase via Plaid API \u2014 12 pending transactions fetched","ML classifier ran on each transaction description and amount","11/12 auto-categorized with >90% confidence","1 transaction flagged: $89.99 at 'DIGITAL SVCS LLC' \u2014 ambiguous vendor","Matched 3 transactions to outstanding purchase orders","Updated QuickBooks with all categorizations","Reconciliation check: bank balance matches ledger \u2713"],
+result:"11 transactions auto-categorized: SaaS $340 (2), Office Supplies $892 (4), Meals $186 (3), Shipping $72 (2). 1 flagged for manual review. QuickBooks synced.",
+metrics:{"Transactions":"12","Auto-Classified":"11 (91.7%)","Flagged":"1","Total Amount":"$4,280.44"}}},
+{a:"co",x:"Published blog post to CMS",t:"15 min ago",s:"success",
+d:{trigger:"Blog post 'AI Agent Orchestration: SMB Guide 2026' approved by editor in WordPress",
+steps:["Received publish webhook from WordPress","Verified SEO checklist: meta title (58 chars \u2713), meta description (142 chars \u2713), alt text on 4 images \u2713","Confirmed internal links (3) are valid and point to live pages","Submitted URL to Google Search Console for indexing","Generated social media pack: LinkedIn post, Twitter thread (5 tweets), Instagram carousel (6 slides)","Scheduled social posts via Buffer API at optimal engagement times","Updated content calendar status to 'Published'"],
+result:"Blog live at /blog/ai-agent-orchestration-guide. SEO score: 91/100. Social posts scheduled: LinkedIn (Tue 9am), Twitter (Wed 12pm), Instagram (Thu 6pm). Google indexing requested.",
+metrics:{"Word Count":"1,847","SEO Score":"91/100","Internal Links":"3","Social Posts":"3 platforms"}}},
+{a:"tx",x:"\u26a0 2 new state nexus thresholds approaching",t:"18 min ago",s:"warning",
+d:{trigger:"Daily nexus threshold monitoring scan completed",
+steps:["Scanned cumulative sales by state against economic nexus thresholds for all 50 states","New York: $498,200 of $500,000 threshold (99.6%) \u2014 projected to cross in 8 days","California: $467,800 of $500,000 threshold (93.6%) \u2014 projected to cross by April","Checked registration status: neither state has active registration","Generated pre-registration checklists for both states","Estimated additional compliance cost: $280/month (2 new state filings)","Alerted finance team via email and Slack"],
+result:"URGENT: New York will require sales tax collection within ~8 days. Registration application pre-filled and ready for submission. California projected April. Both flagged on compliance dashboard.",
+metrics:{"NY Progress":"99.6%","CA Progress":"93.6%","Days to NY Nexus":"~8","New Filing Cost":"$280/mo"}}},
+{a:"cs",x:"Escalated ticket #TK-4920 to Sarah M.",t:"22 min ago",s:"warning",
+d:{trigger:"Customer James K. submitted complaint via live chat: defective product + 3 prior unresolved contacts",
+steps:["Received live chat message with negative sentiment score (-0.91)","Intent classified: COMPLAINT_DEFECT with history flag","Customer history pulled: 3 prior contacts in 10 days, none resolved \u2014 repeat escalation risk","Attempted knowledge base resolution \u2014 insufficient for multi-contact complaint","Escalation rules triggered: sentiment < -0.8 AND contacts > 2","Priority ticket #TK-4920 created with full context summary","Routed to Sarah M. (Senior Support, available, 97% satisfaction rating)","Customer notified: 'A senior specialist will contact you within 20 minutes'"],
+result:"Ticket #TK-4920 assigned to Sarah M. with full context package: original order, 3 prior contacts summarized, product defect details, customer sentiment trajectory. Flagged for immediate replacement authorization ($189 value).",
+metrics:{"Sentiment":"-0.91","Prior Contacts":"3","Escalation Level":"Priority","Assigned To":"Sarah M."}}},
+{a:"pl",x:"Gross margin alert: crossed 72%",t:"25 min ago",s:"info",
+d:{trigger:"Rolling 7-day gross margin calculation exceeded 72% threshold (set target: notify above 71%)",
+steps:["Pulled last 7 days of revenue: $68,420","Calculated COGS for same period: $18,840","Gross margin computed: 72.4% (up from 71.1% prior week)","Analyzed contributing factors: product mix shifted toward higher-margin SaaS revenue (+$4,200 vs prior week)","Compared against 30/60/90 day trend: consistent upward trajectory","Benchmarked against industry average (68.0%) \u2014 outperforming by 4.4 points"],
+result:"Positive alert: Gross margin reached 72.4%, driven by SaaS revenue mix improvement. This is the highest 7-day margin in company history. Trend is sustainable if SaaS growth continues.",
+metrics:{"7-Day Margin":"72.4%","Prior Week":"71.1%","Industry Avg":"68.0%","Trend":"Upward 4 consecutive weeks"}}},
+{a:"sl",x:"Drafted follow-up emails for 3 leads",t:"30 min ago",s:"success",
+d:{trigger:"CRM workflow: 3 leads in 'Meeting Completed' stage with no follow-up after 24 hours",
+steps:["Pulled conversation transcripts and meeting notes for each lead","Lead 1 (Sarah Chen, DataFlow): discussed API integration, needs SSO documentation","Lead 2 (Mike Torres, CloudStack): pricing concerns, needs ROI calculator","Lead 3 (Lisa Park, NexGen): comparing 3 vendors, needs competitive comparison","Retrieved relevant case studies, docs, and templates for each","Generated personalized follow-up emails with specific attachments","Each email reviewed against brand voice guidelines and spam score checked","Queued in SendGrid with individual tracking links"],
+result:"3 personalized emails drafted and queued: DataFlow (technical deep-dive + SSO docs), CloudStack (ROI calculator + pricing breakdown), NexGen (competitive matrix + case study). All scheduled for 9am recipient timezone.",
+metrics:{"Emails Drafted":"3","Avg Personalization":"87%","Attachments":"7 total","Send Time":"9am local"}}},
+{a:"tx",x:"Found $2,400 in missed meal deductions",t:"35 min ago",s:"info",
+d:{trigger:"Weekly deduction optimization scan on 2025 expense data",
+steps:["Scanned all 2025 transactions categorized as 'Meals & Entertainment'","Found 38 transactions ($4,800 total) not flagged as business meals","Cross-referenced with calendar: 32 of 38 occurred on days with client meetings or business travel","Applied IRS 50% deductibility rule: $2,400 in new deductible expenses","Verified receipt documentation exists for 29 of 32 qualifying meals","Flagged 3 meals ($180) needing receipt upload for full compliance","Updated deduction tracker: total deductions increased from $140,460 to $142,860"],
+result:"Discovered $2,400 in previously uncategorized business meal deductions. At 30% effective tax rate, this saves an additional $720 in taxes. 3 transactions need receipt documentation to be fully compliant.",
+metrics:{"New Deductions":"$2,400","Tax Savings":"$720","Meals Found":"32","Needs Receipts":"3"}}},
+{a:"fo",x:"\u26a0 Flagged overdue invoice INV-1089",t:"45 min ago",s:"warning",
+d:{trigger:"Accounts receivable scan detected INV-1089 crossed 21-day overdue threshold",
+steps:["Invoice INV-1089 to Meridian Corp: $12,500 for consulting services (Nov 2025)","Payment terms: Net 30 \u2014 due Dec 28, 2025 \u2014 now 51 days outstanding","Contact history: 1st reminder sent Jan 4 (7 days), 2nd reminder Jan 18 (21 days)","No response to either reminder \u2014 no payment recorded","Pulled Meridian Corp credit data: D&B rating BBB, no bankruptcy filings","Checked if disputed: no dispute filed in vendor portal","3rd escalation reminder drafted with firm language and payment portal link","Flagged for collections consideration if no payment by Feb 28"],
+result:"INV-1089 ($12,500) is 51 days overdue with no response to 2 reminders. 3rd escalation email sent with 10-day deadline. If unpaid by Feb 28, recommend escalating to collections or offering payment plan. Cash flow impact: $12,500 delayed.",
+metrics:{"Amount":"$12,500","Days Overdue":"51","Reminders Sent":"3","Client Rating":"BBB"}}},
+{a:"pl",x:"Q4 financial filing package ready for CPA",t:"50 min ago",s:"success",
+d:{trigger:"Q4 2025 close completed + CPA review deadline approaching (Feb 28)",
+steps:["Compiled Q4 income statement: Revenue $892,400 / Net Income $168,240 (18.9%)","Built balance sheet as of Dec 31: Assets $483,920 / Equity $327,920","Generated cash flow statement (indirect method): Operating +$192,400","Ran GAAP compliance checks: ASC 606, ASC 842, depreciation schedules \u2014 all pass","Prepared management discussion section with key variance explanations","Added footnotes: related party transactions, subsequent events, accounting policy changes","Assembled 42-page filing packet with cover letter for Anderson & Associates CPA"],
+result:"Complete Q4 2025 filing package uploaded to Google Drive (Finance/Q4 2025 Filing/). Email sent to Anderson & Associates with secure download link. 10-K deadline is Mar 31 \u2014 currently 6 weeks ahead of schedule.",
+metrics:{"Revenue":"$892,400","Net Income":"$168,240","Pages":"42","GAAP Checks":"All Pass"}}},
+{a:"co",x:"Detected trending topic: AI Orchestration",t:"1 hr ago",s:"info",
+d:{trigger:"Daily trend scan across Google Trends, Twitter/X, and competitor blog feeds",
+steps:["Google Trends: 'AI agent orchestration' search volume up 340% in 14 days","Twitter/X: 2,400+ tweets with #AIAgents in last 48 hours (up from ~400 baseline)","Competitor scan: 3 direct competitors published related content this week","Your content audit: zero existing posts on this topic \u2014 CONTENT GAP identified","Keyword research: 'AI agent orchestration' = 1,800 monthly searches, difficulty 34/100","Related long-tails found: 'multi-agent AI for business' (720/mo), 'AI agent framework' (2,400/mo)","Opportunity score calculated: 94/100 (high volume + low competition + no existing content)"],
+result:"High-priority content opportunity identified. 'AI Agent Orchestration' is trending 340% with a major content gap on your blog. Recommended: publish definitive guide within 5 days to capture first-mover advantage. Added to content calendar as urgent.",
+metrics:{"Trend Growth":"340%","Search Volume":"1,800/mo","Competition":"34/100","Opportunity":"94/100"}}},
+{a:"tx",x:"Q4 estimated tax payment: $24,525",t:"1.5 hr ago",s:"success",
+d:{trigger:"Q4 2025 estimated tax payment deadline approaching (Jan 15, 2026)",
+steps:["Aggregated all 2025 income: W-2 ($0), 1099-NEC ($287,400), business income ($105,000)","Total estimated annual income: $392,400","Applied 2025 federal tax brackets: estimated liability $98,100","Checked safe harbor: 110% of 2024 liability = $88,000 \u2014 payments must exceed this","Q1-Q3 estimated payments made: $73,575 total ($24,525 x 3)","Q4 payment required: $24,525 to meet safe harbor threshold","Verified payment method: ACH direct debit from Chase Business account","Generated IRS Form 1040-ES voucher with payment confirmation"],
+result:"Q4 estimated tax payment of $24,525 calculated and voucher generated. Total 2025 estimated payments: $98,100 (meets 110% safe harbor). ACH payment scheduled for Jan 14 to ensure posting by Jan 15 deadline. Confirmation will be logged.",
+metrics:{"Q4 Payment":"$24,525","Annual Total":"$98,100","Safe Harbor":"Met (110%)","Method":"ACH Direct Debit"}}},
+{a:"pl",x:"DSO trending up: 38 to 42 days",t:"2 hr ago",s:"warning",
+d:{trigger:"Weekly efficiency ratio scan detected DSO exceeding 40-day internal target",
+steps:["Calculated current DSO: $142,800 A/R \xf7 ($3,218,400 \xf7 365) = 42.1 days","Prior period DSO: 38.2 days (4 weeks ago) \u2014 increase of 3.9 days","Identified root cause: 5 overdue invoices totaling $34,200","Largest contributor: Meridian Corp INV-1089 ($12,500, 51 days overdue)","If Meridian pays this week: DSO drops to 39.8 days (within target)","Benchmarked against industry: 38 days average \u2014 currently 4 days above","Projected cash impact: $34,200 delayed receivables reducing available cash","Correlated with revenue growth: A/R growing faster than collections capacity"],
+result:"DSO has increased from 38 to 42 days over the past month, driven primarily by 5 overdue invoices ($34,200). This is 4 days above industry average. Immediate action: accelerate collections on Meridian Corp ($12,500) and BlueSky LLC ($8,700). If both pay within 2 weeks, DSO returns to target range.",
+metrics:{"Current DSO":"42.1 days","Target":"40 days","Industry Avg":"38 days","Overdue A/R":"$34,200"}}}
 ];
 
 const CC={blue:{bg:'bg-blue-500/10',tx:'text-blue-400',sol:'bg-blue-500',gr:'from-blue-500 to-blue-600',rg:'ring-blue-500/30'},purple:{bg:'bg-purple-500/10',tx:'text-purple-400',sol:'bg-purple-500',gr:'from-purple-500 to-purple-600',rg:'ring-purple-500/30'},green:{bg:'bg-emerald-500/10',tx:'text-emerald-400',sol:'bg-emerald-500',gr:'from-emerald-500 to-emerald-600',rg:'ring-emerald-500/30'},orange:{bg:'bg-amber-500/10',tx:'text-amber-400',sol:'bg-amber-500',gr:'from-amber-500 to-amber-600',rg:'ring-amber-500/30'},red:{bg:'bg-red-500/10',tx:'text-red-400',sol:'bg-red-500',gr:'from-red-500 to-red-600',rg:'ring-red-500/30'},cyan:{bg:'bg-cyan-500/10',tx:'text-cyan-400',sol:'bg-cyan-500',gr:'from-cyan-500 to-cyan-600',rg:'ring-cyan-500/30'}};
@@ -205,6 +269,16 @@ setInterval(clock,1000);clock();
 function nav(s){['dash','agt','log'].forEach(x=>{document.getElementById('s-'+x).classList.add('hidden');document.getElementById('t-'+x).classList.remove('ta')});document.getElementById('s-'+s).classList.remove('hidden');document.getElementById('t-'+s).classList.add('ta')}
 function om(id){document.getElementById(id).style.display='flex'}
 function cm(id){document.getElementById(id).style.display='none'}
+
+function showAct(idx){
+const i=ACT[idx],a=AG[i.a],c=CC[a.cl],d=i.d;
+const sc={success:['COMPLETED','text-emerald-400','bg-emerald-500/10'],warning:['ATTENTION','text-amber-400','bg-amber-500/10'],info:['INFORMATIONAL','text-blue-400','bg-blue-500/10']};
+const st=sc[i.s];
+const stepsHtml=d.steps.map((s,j)=>'<div class="flex gap-3 items-start fu" style="animation-delay:'+(j*60)+'ms"><div class="w-5 h-5 rounded-full '+c.bg+' '+c.tx+' flex items-center justify-center shrink-0 text-[10px] font-bold mono">'+(j+1)+'</div><p class="text-sm text-gray-300">'+s+'</p></div>').join('');
+const metHtml=Object.entries(d.metrics).map(([k,v])=>'<div class="gl2 rounded-lg p-2.5"><p class="text-[9px] text-gray-500 mono uppercase tracking-wider">'+k+'</p><p class="text-sm font-bold '+c.tx+'">'+v+'</p></div>').join('');
+document.getElementById('mib').innerHTML='<div class="flex items-center gap-3 mb-4"><div class="w-10 h-10 rounded-xl bg-gradient-to-br '+c.gr+' flex items-center justify-center text-white" style="transform:scale(.9)">'+a.ic+'</div><div class="flex-1"><h3 class="text-base font-bold text-white">'+i.x+'</h3><div class="flex items-center gap-2 mt-0.5"><span class="text-[10px] mono '+c.tx+'">'+a.nm+'</span><span class="text-gray-600 text-[10px]">\u2022</span><span class="text-[10px] text-gray-500">'+i.t+'</span></div></div></div><div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full '+st[2]+' '+st[1]+' text-[10px] font-medium mono mb-4">'+st[0]+'</div><div class="gl2 rounded-lg p-3.5 mb-4"><p class="text-[9px] text-gray-500 mono uppercase tracking-wider mb-1.5">TRIGGER</p><p class="text-sm text-gray-200 leading-relaxed">'+d.trigger+'</p></div><p class="text-[9px] text-gray-500 mono uppercase tracking-wider mb-2">PROCESSING STEPS</p><div class="space-y-2.5 mb-4">'+stepsHtml+'</div><div class="gl2 rounded-lg p-3.5 mb-4" style="border-left:3px solid '+a.hx+'"><p class="text-[9px] text-gray-500 mono uppercase tracking-wider mb-1.5">RESULT</p><p class="text-sm text-gray-200 leading-relaxed">'+d.result+'</p></div><p class="text-[9px] text-gray-500 mono uppercase tracking-wider mb-2">METRICS</p><div class="grid grid-cols-2 gap-2">'+metHtml+'</div>';
+om('mi');
+}
 
 function showInfo(k){
 const a=AG[k],c=CC[a.cl];
@@ -258,9 +332,9 @@ const c=CC[a.cl],m=Object.entries(a.mt)[0];
 return'<div class="ch gl rounded-xl p-4 cursor-pointer '+a.gw+'" onclick="nav(\'agt\')"><div class="flex items-center justify-between mb-3"><div class="w-9 h-9 rounded-lg bg-gradient-to-br '+c.gr+' flex items-center justify-center text-white">'+a.ic+'</div><span class="dot"></span></div><h3 class="text-sm font-semibold text-white mb-1">'+a.sn+' Agent</h3><p class="text-xs text-gray-500 mb-3" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">'+a.ds+'</p><div class="flex items-end justify-between"><div><p class="text-[9px] text-gray-600 mono uppercase">'+m[0]+'</p><p class="text-lg font-bold '+c.tx+'">'+m[1]+'</p></div><div class="w-20">'+mch(a.ch,a.hx)+'</div></div></div>'
 }).join('');
 
-document.getElementById('dash-act').innerHTML='<div class="divide-y divide-white/5">'+ACT.slice(0,10).map(i=>{
+document.getElementById('dash-act').innerHTML='<div class="divide-y divide-white/5">'+ACT.slice(0,10).map((i,idx)=>{
 const a=AG[i.a],c=CC[a.cl],ic=i.s==='success'?'\u2705':i.s==='warning'?'\u26a0\ufe0f':'\u2139\ufe0f';
-return'<div class="flex items-center gap-3 px-4 py-3 hover:bg-white/[.02] transition"><div class="w-7 h-7 rounded-lg '+c.bg+' flex items-center justify-center '+c.tx+' shrink-0" style="transform:scale(.85)">'+a.ic+'</div><div class="flex-1 min-w-0"><p class="text-sm text-gray-300 truncate">'+i.x+'</p><p class="text-[10px] text-gray-600 mono">'+a.sn+'</p></div><div class="text-right shrink-0"><p class="text-[10px] text-gray-500">'+i.t+'</p><p class="text-xs">'+ic+'</p></div></div>'
+return'<div class="flex items-center gap-3 px-4 py-3 hover:bg-white/[.04] transition cursor-pointer" onclick="showAct('+idx+')"><div class="w-7 h-7 rounded-lg '+c.bg+' flex items-center justify-center '+c.tx+' shrink-0" style="transform:scale(.85)">'+a.ic+'</div><div class="flex-1 min-w-0"><p class="text-sm text-gray-300 truncate">'+i.x+'</p><p class="text-[10px] text-gray-600 mono">'+a.sn+'</p></div><div class="flex items-center gap-2 shrink-0"><div class="text-right"><p class="text-[10px] text-gray-500">'+i.t+'</p><p class="text-xs">'+ic+'</p></div><svg class="w-3.5 h-3.5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></div></div>'
 }).join('')+'</div>';
 
 document.getElementById('agt-cards').innerHTML=Object.values(AG).map(a=>{
@@ -270,11 +344,11 @@ const tags=a.sm.map(s=>'<span class="inline-block px-2 py-0.5 text-[10px] rounde
 return'<div class="ch gl rounded-2xl p-5 '+a.gw+'"><div class="flex items-center gap-3 mb-4"><div class="w-11 h-11 rounded-xl bg-gradient-to-br '+c.gr+' flex items-center justify-center text-white">'+a.ic+'</div><div><h3 class="text-base font-bold text-white">'+a.nm+'</h3><div class="flex items-center gap-2"><span class="dot"></span><span class="text-xs text-emerald-400">Online</span></div></div></div><p class="text-sm text-gray-400 mb-4 leading-relaxed">'+a.ds+'</p><div class="grid grid-cols-2 gap-3 mb-4">'+met+'</div><div class="mb-4"><p class="text-[9px] text-gray-600 mono uppercase mb-2">Weekly Trend</p>'+mch(a.ch,a.hx)+'</div><div class="mb-5"><p class="text-[9px] text-gray-600 mono uppercase mb-2">Scenarios</p><div class="flex flex-wrap gap-1">'+tags+'</div></div><div class="flex gap-2"><button onclick="showInfo(\''+a.id+'\' )" class="flex-1 px-3 py-2.5 rounded-xl gl2 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/10 transition flex items-center justify-center gap-2"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Agent Info</button><button onclick="showSim(\''+a.id+'\' )" class="flex-1 px-3 py-2.5 rounded-xl bg-gradient-to-r '+c.gr+' text-sm font-medium text-white hover:opacity-90 transition flex items-center justify-center gap-2 shadow-lg"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Run Sim</button></div></div>'
 }).join('');
 
-document.getElementById('loglist').innerHTML=ACT.map(i=>{
+document.getElementById('loglist').innerHTML=ACT.map((i,idx)=>{
 const a=AG[i.a],c=CC[a.cl];
 const sc={success:'text-emerald-400',warning:'text-amber-400',info:'text-blue-400'};
 const si={success:'\u25cf',warning:'\u25b2',info:'\u25c6'};
-return'<div class="le flex items-center gap-2 p-2.5 rounded-lg hover:bg-white/[.02] transition" data-s="'+i.s+'"><span class="text-xs '+sc[i.s]+'">'+si[i.s]+'</span><div class="w-5 h-5 rounded '+c.bg+' flex items-center justify-center '+c.tx+' shrink-0" style="transform:scale(.75)">'+a.ic+'</div><span class="text-[10px] font-medium '+c.tx+' w-14 shrink-0 mono">'+a.sn+'</span><span class="text-xs text-gray-300 flex-1 truncate">'+i.x+'</span><span class="text-[10px] text-gray-600 shrink-0 mono">'+i.t+'</span></div>'
+return'<div class="le flex items-center gap-2 p-2.5 rounded-lg hover:bg-white/[.04] transition cursor-pointer" data-s="'+i.s+'" onclick="showAct('+idx+')"><span class="text-xs '+sc[i.s]+'">'+si[i.s]+'</span><div class="w-5 h-5 rounded '+c.bg+' flex items-center justify-center '+c.tx+' shrink-0" style="transform:scale(.75)">'+a.ic+'</div><span class="text-[10px] font-medium '+c.tx+' w-14 shrink-0 mono">'+a.sn+'</span><span class="text-xs text-gray-300 flex-1 truncate">'+i.x+'</span><span class="text-[10px] text-gray-600 shrink-0 mono">'+i.t+'</span><svg class="w-3.5 h-3.5 text-gray-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></div>'
 }).join('');
 }
 
