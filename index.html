@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zactonics AI Agent Hub</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#060a14;--surface:rgba(12,18,35,.85);--surface2:rgba(22,32,58,.6);--border:rgba(255,255,255,.05);--glow-blue:#3b82f6;--glow-purple:#8b5cf6;--glow-green:#10b981;--glow-orange:#f59e0b;--glow-red:#ef4444;--glow-cyan:#06b6d4}
+*{font-family:'DM Sans',system-ui,sans-serif;box-sizing:border-box}
+body{background:var(--bg);overflow-x:hidden}
+body::before{content:'';position:fixed;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 30% 20%,rgba(59,130,246,.04) 0%,transparent 50%),radial-gradient(ellipse at 70% 80%,rgba(139,92,246,.03) 0%,transparent 50%);pointer-events:none;z-index:0}
+.gl{background:var(--surface);backdrop-filter:blur(20px);border:1px solid var(--border)}
+.gl2{background:var(--surface2);backdrop-filter:blur(12px);border:1px solid var(--border)}
+.mono{font-family:'Space Mono',monospace}
+@keyframes fu{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pd{0%,100%{opacity:1}50%{opacity:.2}}
+@keyframes glow-pulse{0%,100%{opacity:.6}50%{opacity:1}}
+@keyframes gradient-shift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.fu{animation:fu .4s ease-out forwards}
+.pd{animation:pd 1.5s ease-in-out infinite}
+.ch{transition:all .35s cubic-bezier(.4,0,.2,1)}.ch:hover{transform:translateY(-4px)}
+.ta{border-bottom:2px solid var(--glow-blue);color:#fff!important}
+.mc{display:flex;align-items:flex-end;gap:2px;height:36px}
+.dot{width:8px;height:8px;border-radius:50%;background:#10b981;display:inline-block;animation:glow-pulse 2s ease-in-out infinite}
+.logo-text{background:linear-gradient(135deg,#3b82f6,#8b5cf6,#06b6d4);background-size:200% 200%;animation:gradient-shift 4s ease infinite;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:3px}
+.gbl{box-shadow:0 0 30px rgba(59,130,246,.1),inset 0 1px 0 rgba(59,130,246,.1)}
+.gpr{box-shadow:0 0 30px rgba(139,92,246,.1),inset 0 1px 0 rgba(139,92,246,.1)}
+.ggr{box-shadow:0 0 30px rgba(16,185,129,.1),inset 0 1px 0 rgba(16,185,129,.1)}
+.gor{box-shadow:0 0 30px rgba(245,158,11,.1),inset 0 1px 0 rgba(245,158,11,.1)}
+.grd{box-shadow:0 0 30px rgba(239,68,68,.1),inset 0 1px 0 rgba(239,68,68,.1)}
+.gcn{box-shadow:0 0 30px rgba(6,182,212,.1),inset 0 1px 0 rgba(6,182,212,.1)}
+.stat-card{position:relative;overflow:hidden}.stat-card::after{content:'';position:absolute;top:0;right:0;width:60px;height:60px;background:radial-gradient(circle,rgba(255,255,255,.03) 0%,transparent 70%);pointer-events:none}
+</style>
+</head>
+<body class="text-gray-300 min-h-screen relative z-10">
+
+<header class="gl sticky top-0 z-40 px-4 md:px-6 py-3 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 via-purple-500 to-cyan-400 flex items-center justify-center shadow-lg shadow-blue-500/20">
+<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+</div>
+<div><h1 class="text-lg font-bold leading-tight"><span class="logo-text">Zactonics</span> <span class="text-white">AI Agent Hub</span></h1>
+<p class="text-[10px] text-gray-500 mono tracking-wider">MULTI-AGENT COMMAND CENTER</p></div>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-2 text-xs text-gray-400"><span class="dot"></span><span class="hidden sm:inline mono text-[11px]">6 AGENTS ONLINE</span></div>
+<div class="gl2 px-3 py-1.5 rounded-lg text-xs text-gray-400 mono" id="clock"></div>
+</div>
+</header>
+
+<nav class="gl2 px-4 md:px-6 flex gap-0.5 border-b border-white/5">
+<button onclick="nav('dash')" id="t-dash" class="px-4 py-3 text-sm font-medium text-gray-500 hover:text-white transition ta">Dashboard</button>
+<button onclick="nav('agt')" id="t-agt" class="px-4 py-3 text-sm font-medium text-gray-500 hover:text-white transition">Agents</button>
+<button onclick="nav('log')" id="t-log" class="px-4 py-3 text-sm font-medium text-gray-500 hover:text-white transition">Activity</button>
+</nav>
+
+<main class="p-4 md:p-6 max-w-7xl mx-auto w-full">
+
+<section id="s-dash" class="fu">
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
+<div class="gl rounded-xl p-4 stat-card"><p class="text-[10px] text-gray-500 mono uppercase tracking-wider mb-1">Interactions</p><p class="text-2xl font-bold text-white" id="ctr">0</p><p class="text-[10px] text-emerald-400 mt-1">↑ 18% this week</p></div>
+<div class="gl rounded-xl p-4 stat-card"><p class="text-[10px] text-gray-500 mono uppercase tracking-wider mb-1">Avg Response</p><p class="text-2xl font-bold text-white">1.6s</p><p class="text-[10px] text-emerald-400 mt-1">↓ 0.4s faster</p></div>
+<div class="gl rounded-xl p-4 stat-card"><p class="text-[10px] text-gray-500 mono uppercase tracking-wider mb-1">Satisfaction</p><p class="text-2xl font-bold text-white">93%</p><p class="text-[10px] text-emerald-400 mt-1">↑ 4% this month</p></div>
+<div class="gl rounded-xl p-4 stat-card"><p class="text-[10px] text-gray-500 mono uppercase tracking-wider mb-1">Cost Savings</p><p class="text-2xl font-bold text-white">$21.8K</p><p class="text-[10px] text-gray-500 mt-1">per month</p></div>
+<div class="gl rounded-xl p-4 stat-card"><p class="text-[10px] text-gray-500 mono uppercase tracking-wider mb-1">Agents</p><p class="text-2xl font-bold text-white">6 / 6</p><p class="text-[10px] text-emerald-400 mt-1">All online</p></div>
+<div class="gl rounded-xl p-4 stat-card"><p class="text-[10px] text-gray-500 mono uppercase tracking-wider mb-1">Uptime</p><p class="text-2xl font-bold text-white">99.97%</p><p class="text-[10px] text-gray-500 mt-1">Last 30 days</p></div>
+</div>
+<h2 class="text-[10px] font-semibold text-gray-600 mono uppercase tracking-[.2em] mb-3">Agent Overview</h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6" id="dash-cards"></div>
+<h2 class="text-[10px] font-semibold text-gray-600 mono uppercase tracking-[.2em] mb-3">Recent Activity</h2>
+<div class="gl rounded-xl overflow-hidden" id="dash-act"></div>
+</section>
+
+<section id="s-agt" class="hidden fu">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4" id="agt-cards"></div>
+</section>
+
+<section id="s-log" class="hidden fu">
+<div class="gl rounded-xl p-4 md:p-6">
+<div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+<h2 class="text-base font-bold text-white">System Activity Log</h2>
+<div class="flex gap-2">
+<button onclick="filt('all')" class="fbtn px-3 py-1 text-[10px] mono rounded-lg bg-blue-500/15 text-blue-300 border border-blue-500/20">ALL</button>
+<button onclick="filt('success')" class="fbtn px-3 py-1 text-[10px] mono rounded-lg gl2 text-gray-500 hover:text-white">SUCCESS</button>
+<button onclick="filt('warning')" class="fbtn px-3 py-1 text-[10px] mono rounded-lg gl2 text-gray-500 hover:text-white">WARNINGS</button>
+</div>
+</div>
+<div id="loglist" class="space-y-1 max-h-[500px] overflow-y-auto"></div>
+</div>
+</section>
+</main>
+
+<div id="mi" class="fixed inset-0 z-50 flex items-center justify-center p-4" style="display:none">
+<div class="absolute inset-0 bg-black/70 backdrop-blur-md" onclick="cm('mi')"></div>
+<div class="relative gl rounded-2xl max-w-lg w-full p-6 max-h-[80vh] overflow-y-auto" style="border:1px solid rgba(255,255,255,.08)">
+<button onclick="cm('mi')" class="absolute top-4 right-4 text-gray-500 hover:text-white z-10"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+<div id="mib"></div>
+</div>
+</div>
+
+<div id="ms" class="fixed inset-0 z-50 flex items-center justify-center p-4" style="display:none">
+<div class="absolute inset-0 bg-black/70 backdrop-blur-md" onclick="cm('ms')"></div>
+<div class="relative gl rounded-2xl max-w-2xl w-full p-6 max-h-[85vh] overflow-y-auto" style="border:1px solid rgba(255,255,255,.08)">
+<button onclick="cm('ms')" class="absolute top-4 right-4 text-gray-500 hover:text-white z-10"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+<div id="msb"></div>
+</div>
+</div>
+
+<script>
+const AG={
+cs:{id:"cs",nm:"Customer Support Agent",sn:"Support",cl:"blue",hx:"#3b82f6",gw:"gbl",
+ic:'<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/></svg>',
+ds:"Handles 24/7 FAQs, triages complex tickets to humans, and provides instant order tracking.",
+hw:["Ingests your FAQ database and product documentation","Uses NLP to classify questions by intent & urgency","Responds instantly to known FAQs with pre-approved answers","Escalates complex tickets to humans with full context","Tracks orders via shipping API for real-time status","Learns from resolved tickets to improve accuracy"],
+mt:{Resolved:"1,847","Avg Response":"1.2s",Satisfaction:"94%",Escalation:"8%"},ch:[65,78,82,71,90,85,88],
+sm:[
+{t:"FAQ Resolution",q:"What is your return policy for electronics?",st:["Receiving customer query...","Classifying intent → [RETURN_POLICY]","Searching knowledge base...","Match found: FAQ #127 (97.3%)","Generating response..."],r:"Great question! Our electronics return policy allows returns within 30 days with original packaging. Items must be in working condition. Refunds process in 5-7 business days. Would you like me to start a return?"},
+{t:"Order Tracking",q:"Where is my order #ORD-29471?",st:["Receiving query...","Classifying → [ORDER_TRACKING]","Querying shipping API...","Carrier: FedEx | FX-8827364","Compiling timeline..."],r:"📦 Order #ORD-29471 shipped via FedEx (FX-8827364). Left Memphis this morning, in transit to Montgomery, AL. Delivery: Tomorrow by 5:00 PM."},
+{t:"Ticket Escalation",q:"Product broke after 2 days and nobody is helping!",st:["Receiving query...","Classifying → [COMPLAINT_DEFECT]","Sentiment: NEGATIVE (-0.87)","⚠ Escalation triggered","Creating ticket #TK-4921...","Routing to Sarah M."],r:"I understand your frustration. Priority ticket #TK-4921 created — Sarah will reach out within 30 minutes. Your order is flagged for immediate replacement."}
+]},
+sl:{id:"sl",nm:"Sales & Lead Agent",sn:"Sales",cl:"purple",hx:"#8b5cf6",gw:"gpr",
+ic:'<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>',
+ds:"Qualifies website visitors, drafts personalized follow-up emails, and schedules meetings on your calendar.",
+hw:["Monitors visitor behavior (pages, time, scroll depth)","Scores leads on engagement and firmographic data","Initiates chat with high-intent visitors","Asks qualifying questions (budget, timeline, authority)","Drafts personalized follow-up emails","Books meetings via scheduling API"],
+mt:{Leads:"324",Conversion:"18.7%",Meetings:"67",Emails:"892"},ch:[42,55,48,62,58,71,65],
+sm:[
+{t:"Lead Qualification",q:"New visitor on pricing — TechStart Inc (4 pages, 8 min)",st:["Detecting high-intent visitor...","Enriching: TechStart, Series A, 45 employees","Lead score: 82/100 (HOT)","ICP match ✓","Initiating chat..."],r:"👋 Hi! Companies like TechStart love our Growth tier — API access + team features. Want a walkthrough or a 15-min call?"},
+{t:"Follow-up Email",q:"Draft follow-up for Sarah Chen (CTO @ DataFlow)",st:["Retrieving history...","Topics: API, webhooks, SSO","Analyzing tech stack...","Template: Technical DM","Personalizing..."],r:"Subject: API Integration Details for DataFlow\n\nHi Sarah,\n• API: 10K req/min — handles your volume\n• Webhooks: Full streaming • SSO: SAML 2.0 + OAuth 2.0\nSandbox ready. Thursday 2 PM?\nBest, Alex"},
+{t:"Meeting Scheduler",q:"Book demo with Mark Rivera, CEO GreenLeaf Solutions",st:["Checking calendar...","Slots: Tue 10am, Wed 2pm, Thu 11am","Timezone: PST","Creating Zoom invite...","Preparing brief..."],r:"✅ Booked! Wed 2 PM EST (11 AM PST)\n👤 Mark Rivera, CEO | 🔗 Zoom generated\nBrief: Packaging co, 120 employees, $8M ARR"}
+]},
+fo:{id:"fo",nm:"Finance & Operations Agent",sn:"Finance",cl:"green",hx:"#10b981",gw:"ggr",
+ic:'<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>',
+ds:"Automatically categorizes expenses, flags late invoices, and generates weekly cash flow reports.",
+hw:["Connects to bank & accounting APIs","ML auto-categorizes every transaction","Monitors A/R and flags past-due invoices","Sends reminders at 7, 14, 30 day intervals","Generates weekly cash flow with trends","Alerts on unusual spending or overruns"],
+mt:{Categorized:"4,521","Late Invoices":"23",Accuracy:"96.8%","Saved":"12h/wk"},ch:[30,45,38,52,41,60,55],
+sm:[
+{t:"Expense Categorization",q:"Process 47 transactions from Chase Business",st:["Connecting to Chase API...","Fetching 47 txns ($28,450)...","Running ML categorization...","45/47 classified (95.7%)","2 flagged for review","Updating QuickBooks..."],r:"✅ 47 Processed ($28,450.67)\n• SaaS: $4,200 (8) • Supplies: $1,847 (12)\n• Marketing: $8,500 (5) • Payroll: $11,200 (2)\n• Travel: $1,453 (15) • Utilities: $750 (3)\n⚠ Flagged: $350 unknown vendor, $150 duplicate"},
+{t:"Late Invoice Detection",q:"Scan for overdue payments",st:["Scanning A/R...","34 outstanding ($142,800)","Checking due dates...","5 overdue found","Sending reminders..."],r:"🔴 5 Overdue — $34,200\n1. Meridian $12,500 (21d) 2. BlueSky $8,700 (14d)\n3. TechBridge $6,200 (12d) 4. Oakwood $4,300 (7d)\n5. Summit $2,500 (3d)"},
+{t:"Cash Flow Report",q:"Weekly report Feb 10-16, 2026",st:["Aggregating income...","Compiling expenses...","Net calculation...","Week comparison...","Summary..."],r:"📈 Feb 10-16\n💰 Income: $67,340 | 💸 Expenses: $41,280\n📊 Net: +$26,060 (+12%)\n🏦 Balance: $184,520 | Runway: 6.2 months"}
+]},
+co:{id:"co",nm:"Content Marketing Agent",sn:"Content",cl:"orange",hx:"#f59e0b",gw:"gor",
+ic:'<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>',
+ds:"Monitors trends, drafts SEO-friendly blog posts, and adapts content for social media platforms.",
+hw:["Monitors Google Trends, social media & industry news","Identifies content gaps via competitor analysis","Generates SEO-optimized blog drafts","Adapts content for each social platform","Suggests optimal posting times","Tracks performance and recommends improvements"],
+mt:{Posts:"156","SEO Score":"87/100","Social":"624",Trends:"89"},ch:[20,35,28,42,38,50,45],
+sm:[
+{t:"Trend Monitoring",q:"Trending SaaS/B2B topics this week?",st:["Scanning Google Trends...","Twitter/X #B2B analysis...","Competitor monitoring...","Calendar cross-ref...","Ranking potential..."],r:"🔥 Trending:\n1. 'AI Agent Orchestration' ↑340% — Content gap!\n2. 'SOC 2 Automation' — Refresh your 2024 post\n3. 'Vertical AI SaaS' — Emerging trend\n4. 'Success Metrics' — Your #8 → push to top 3"},
+{t:"Blog Post Draft",q:"Draft SEO blog on AI Agent Orchestration",st:["Keyword research...","Primary: 'AI agent orchestration' (1,800/mo)","SERP analysis...","Outline generation...","Writing 1,800 words...","SEO pass..."],r:"✅ Draft Ready! SEO: 91/100\n'AI Agent Orchestration: SMB Guide 2026'\n1,847 words | Grade 8 | 6 keyword uses\n6 sections, 3 internal links, 4 images"},
+{t:"Social Adaptation",q:"Adapt blog for LinkedIn, Twitter/X, Instagram",st:["Extracting takeaways...","LinkedIn post...","Twitter/X thread...","Instagram carousel...","Scheduling..."],r:"📱 Pack Ready!\n🔵 LinkedIn (Tue 9am): Professional post\n🐦 Twitter/X (Wed 12pm): 5-tweet thread\n📸 Instagram (Thu 6pm): 6-slide carousel\n✅ Scheduled in Buffer"}
+]},
+tx:{id:"tx",nm:"Tax & Compliance Agent",sn:"Tax",cl:"red",hx:"#ef4444",gw:"grd",
+ic:'<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z"/></svg>',
+ds:"Manages sales tax calculations, tracks deductions, prepares filing summaries, and monitors compliance across jurisdictions.",
+hw:["Connects to POS, invoicing, and payroll to aggregate taxable transactions","Calculates sales tax per jurisdiction using real-time tax tables","Scans expenses and categorizes deductions by IRS schedule","Tracks quarterly estimated tax deadlines with proactive reminders","Generates pre-filled filing worksheets for federal, state, and local","Monitors regulatory changes and flags new compliance requirements"],
+mt:{"Deductions":"$42,800","Filing Acc.":"99.2%",Jurisdictions:"12","Deadlines":"100%"},ch:[15,22,18,35,28,45,40],
+sm:[
+{t:"Sales Tax Calculation",q:"Calculate sales tax collected across all channels for Q4 2025",st:["Connecting to Shopify POS and invoicing...","Aggregating Q4: 3,847 orders across 12 states...","Loading tax rate tables per jurisdiction...","Calculating nexus obligations by state...","Cross-referencing exemption certificates...","Compiling jurisdiction summary..."],r:"🧾 Q4 2025 Sales Tax Summary\n\n📊 Taxable Revenue: $487,320\n💰 Tax Collected: $38,214.67\n\nTop Jurisdictions:\n• Alabama (state+county): $12,480 (4.0% + ~5.1% local)\n  Montgomery Co: $8,240 | Madison Co: $4,240\n• Georgia: $8,945 (4.0% + local)\n• Florida: $6,123 (6.0%)\n• Tennessee: $4,880 (7.0%)\n• 8 others: $5,786\n\n⚠ Actions:\n→ AL monthly filing due Feb 20 — $4,812\n→ GA quarterly due Feb 28 — $3,220\n→ TX & NY nexus thresholds approaching\n→ 14 exemption certs expiring Q1\n\n✅ All collected amounts reconciled."},
+{t:"Deduction Tracker",q:"Scan all 2025 expenses and identify tax deductions",st:["Loading 2025 expenses from QuickBooks...","Categorizing 6,284 transactions by IRS schedule...","Applying Section 179 depreciation analysis...","Identifying home office & vehicle deductions...","Cross-referencing prior year for consistency...","Flagging missed deductions...","Generating summary by schedule..."],r:"💡 2025 Tax Deduction Analysis\n\n📋 Total Deductions: $142,860\n💵 Est. Tax Savings: $42,858 (at 30% effective rate)\n\nSchedule C — Business Expenses:\n• Rent & utilities: $36,000 • Software: $14,400\n• Professional services: $18,200 • Marketing: $22,800\n• Insurance: $8,400\n\nSection 179 — Depreciation:\n• Laptops+monitors: $8,700 • Furniture: $4,200\n• Server equipment: $12,500\n\nVehicle & Travel:\n• Mileage (8,420 mi × $0.67): $5,641\n• Business travel: $6,840\n\nHome Office (280/1,800 sq ft):\n• Simplified: $1,500 • Actual: $5,180 ← RECOMMENDED\n\n🔍 3 Missed Deductions Found:\n→ $2,400 business meals (50% deductible)\n→ $890 professional development\n→ $1,200 charitable donations\n\n⚡ Switch to actual home office method = $3,680 extra savings"},
+{t:"Filing Preparation",q:"Prepare Q4 estimated tax filing and annual return checklist",st:["Calculating Q4 estimated obligation...","Comparing to safe harbor (110% prior year)...","Aggregating all income sources...","Applying 2025 brackets...","Generating filing timeline...","Preparing CPA document checklist..."],r:"📅 Tax Filing Prep — 2025\n\n🔵 Q4 ESTIMATED (Due Jan 15, 2026)\n  Annual income: $392,400\n  Tax liability: ~$98,100\n  Paid Q1-Q3: $73,575\n  → Q4 due: $24,525 | Safe harbor: ✅\n\n🔴 ANNUAL RETURN DATES\n  Jan 31: W-2s & 1099s to contractors\n  Mar 15: S-Corp return (1120-S)\n  Apr 15: Individual (1040 + Sch C)\n\n📋 DOCUMENT STATUS\n  ✅ 1099-NEC received (7/7)\n  ✅ QuickBooks reconciled thru Dec 31\n  ✅ W-2s generated (8 employees)\n  ⬜ K-1 from partnership (ETA: Feb 28)\n  ⬜ Final bank reconciliation\n\n💰 ESTIMATED RESULT\n  Itemized: OWE $2,340\n  Standard: OWE $18,720\n  → ITEMIZE (saves $16,380)\n\n📎 CPA packet exported to Drive."},
+{t:"Compliance Monitor",q:"Check multi-state tax compliance and upcoming obligations",st:["Scanning state registrations...","Checking nexus thresholds (50 states)...","Reviewing filing frequencies...","Verifying prior filings current...","Monitoring legislative changes..."],r:"🏛️ Multi-State Compliance\n\n✅ COMPLIANT (8 states)\n  AL, GA, FL, TN, NC, SC, VA, TX\n\n⚠️ ACTION REQUIRED\n  • New York: Nexus at $498K/$500K → Register by Q2\n  • California: At $467K → Projected trigger April\n\n📋 NEXT 30 DAYS\n  • AL Monthly Feb 20: $4,812\n  • GA Quarterly Feb 28: $3,220\n  • FL Semi-Annual Mar 1: $2,890\n\n🔔 ALERTS\n  • AL marketplace facilitator rules Mar 1\n  • TN SaaS taxability ruling pending\n  • Federal BOI reporting extended to Mar 21\n\n✅ All 2025 returns filed. No penalties."}
+]},
+pl:{id:"pl",nm:"P&L & Financial Filing Agent",sn:"P&L",cl:"cyan",hx:"#06b6d4",gw:"gcn",
+ic:'<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>',
+ds:"Generates P&L statements, auto-prepares financial filings, tracks margins, and produces investor-ready reports.",
+hw:["Aggregates revenue, COGS, and OpEx from all connected systems","Generates real-time P&L with MoM and YoY comparisons","Calculates gross, operating, and net margins with trend analysis","Auto-prepares GAAP-compliant quarterly and annual financial statements","Produces board-ready packages with charts, commentary, and forecasts","Monitors financial ratios and alerts on deviations from targets"],
+mt:{"Reports":"48","Margin Acc.":"99.4%","Filing Prep":"< 2 hrs","Alerts":"7"},ch:[25,30,42,38,55,48,52],
+sm:[
+{t:"Monthly P&L",q:"Generate January 2026 P&L with comparisons",st:["Aggregating Jan 2026 revenue...","Pulling COGS from inventory/vendors...","Compiling OpEx by department...","Calculating margins...","MoM and YoY comparisons...","Variance analysis..."],r:"📊 P&L — January 2026\n\n                     Jan 2026   Dec 2025   Jan 2025\n💰 REVENUE\n  Product Sales       $168,400   $182,100   $142,300\n  Service Revenue      $74,200    $68,500    $61,800\n  SaaS/Recurring       $45,800    $44,200    $32,600\n  Total               $288,400   $294,800   $236,700\n                                  (-2.2%)    (+21.8%)\n\n📈 GROSS PROFIT       $207,200   $210,515   $165,509\n   Margin               71.8%      71.4%      69.9% ✅\n\n🏢 OPERATING EXP     $149,240   $156,220   $126,500\n\n📊 OPERATING INC      $57,960    $54,295    $39,009\n   Margin               20.1%      18.4%      16.5% 📈\n\n💵 NET INCOME          $56,760    $53,095    $37,609\n   Margin               19.7%      18.0%      15.9% 📈\n\n⚡ Operating margin crossed 20% — first time! 🎉\n   SaaS growing 40.5% YoY — strongest segment"},
+{t:"Quarterly Filing",q:"Auto-prepare Q4 2025 financial statements for filing",st:["Aggregating Q4 data (Oct-Dec)...","Generating Income Statement (GAAP)...","Building Balance Sheet (Dec 31)...","Preparing Cash Flow (indirect)...","Running GAAP compliance checks...","Adding disclosures...","Formatting for CPA review..."],r:"📋 Q4 2025 FILING PACKAGE\n\n📄 INCOME STATEMENT\n  Revenue: $892,400 | COGS: $254,380 (28.5%)\n  Gross Profit: $638,020 (71.5%)\n  OpEx: $462,180 | Net Income: $168,240 (18.9%)\n\n📄 BALANCE SHEET (Dec 31)\n  Assets: $483,920 | Liabilities: $156,000\n  Equity: $327,920\n\n📄 CASH FLOW\n  Operating: +$192,400 | Investing: -$34,200\n  Financing: -$18,000 | Net: +$140,200\n\n✅ GAAP CHECKS\n  ASC 606 revenue recognition ✅\n  ASC 842 lease accounting ✅\n  Depreciation schedules ✅\n  Q4 accruals posted ✅\n\n📎 Filed to Drive → CPA packet sent\n📅 10-K deadline Mar 31 — ON TRACK"},
+{t:"Ratio Analysis",q:"Full financial ratio analysis with benchmarks",st:["Calculating profitability ratios...","Computing liquidity ratios...","Analyzing efficiency (DSO, DPO)...","Industry benchmark comparison...","Identifying trends & red flags...","Executive summary..."],r:"📊 RATIO ANALYSIS — FY 2025\n\n📈 PROFITABILITY        Yours   Industry\n  Gross Margin           71.5%    68.0%  ✅\n  Operating Margin       19.7%    15.2%  ✅\n  Net Margin             18.9%    12.8%  ✅\n  ROE                    51.3%    22.0%  ✅\n\n💧 LIQUIDITY\n  Current Ratio           3.12     2.10  ✅\n  Quick Ratio             2.69     1.80  ✅\n\n⚙️ EFFICIENCY\n  DSO                    42 days  38 days ⚠️\n  Inventory Turnover      8.2x     7.5x  ✅\n  Rev/Employee           $148K    $125K  ✅\n\n⚠️ ALERTS\n  1. DSO trending up 38→42 days (5 overdue invoices)\n  2. Marketing ROI declining $4.80→$3.92 per $1\n\n💡 HEALTH: STRONG — Outperforming across the board"},
+{t:"Annual Report",q:"Prepare 2025 annual report for board and investors",st:["Compiling 12-month P&L...","YoY comparison (2024 vs 2025)...","Segment analysis by revenue stream...","2026 projections...","Executive summary...","Board presentation package..."],r:"📑 2025 ANNUAL REPORT\n\n🏆 EXECUTIVE SUMMARY\n  Revenue grew 34% to $3.2M. Operating profitability\n  achieved at 19.7% margin. SaaS crossed $500K ARR.\n\n📊 ANNUAL P&L\n  Revenue:        $3,218,400 (+34% YoY)\n  Gross Profit:   $2,301,156 (71.5%)\n  Operating Inc:    $634,025 (19.7%)\n  Net Income:       $608,425 (18.9%)\n  EBITDA:           $712,025 (22.1%)\n\n📈 REVENUE SEGMENTS\n  Products: $1,842K (57%) +28%\n  Services:   $876K (27%) +31%\n  SaaS:       $500K (16%) +67% 🚀\n\n🔮 2026 PROJECTIONS\n  Conservative: $3.86M (+20%)\n  Base case:    $4.18M (+30%)\n  Aggressive:   $4.83M (+50%)\n\n👥 Employees: 8→12 | Customers: 342→485\n📎 42-page report → Drive & Board portal"}
+]}
+};
+
+
+const ACT=[
+{a:"cs",x:"Resolved ticket #TK-4918",t:"2 min ago",s:"success"},
+{a:"tx",x:"Alabama monthly filing prepared — $4,812",t:"3 min ago",s:"success"},
+{a:"sl",x:"Qualified lead: DataVault Inc",t:"5 min ago",s:"success"},
+{a:"pl",x:"January 2026 P&L statement generated",t:"6 min ago",s:"success"},
+{a:"fo",x:"Categorized 12 new transactions",t:"8 min ago",s:"success"},
+{a:"co",x:"Published blog post to CMS",t:"15 min ago",s:"success"},
+{a:"tx",x:"\u26a0 2 new state nexus thresholds approaching",t:"18 min ago",s:"warning"},
+{a:"cs",x:"Escalated ticket #TK-4920 to Sarah M.",t:"22 min ago",s:"warning"},
+{a:"pl",x:"Gross margin alert: crossed 72%",t:"25 min ago",s:"info"},
+{a:"sl",x:"Drafted follow-up emails for 3 leads",t:"30 min ago",s:"success"},
+{a:"tx",x:"Found $2,400 in missed meal deductions",t:"35 min ago",s:"info"},
+{a:"fo",x:"\u26a0 Flagged overdue invoice INV-1089",t:"45 min ago",s:"warning"},
+{a:"pl",x:"Q4 financial filing package ready for CPA",t:"50 min ago",s:"success"},
+{a:"co",x:"Detected trending topic: AI Orchestration",t:"1 hr ago",s:"info"},
+{a:"tx",x:"Q4 estimated tax payment: $24,525",t:"1.5 hr ago",s:"success"},
+{a:"pl",x:"DSO trending up: 38 to 42 days",t:"2 hr ago",s:"warning"}
+];
+
+const CC={blue:{bg:'bg-blue-500/10',tx:'text-blue-400',sol:'bg-blue-500',gr:'from-blue-500 to-blue-600',rg:'ring-blue-500/30'},purple:{bg:'bg-purple-500/10',tx:'text-purple-400',sol:'bg-purple-500',gr:'from-purple-500 to-purple-600',rg:'ring-purple-500/30'},green:{bg:'bg-emerald-500/10',tx:'text-emerald-400',sol:'bg-emerald-500',gr:'from-emerald-500 to-emerald-600',rg:'ring-emerald-500/30'},orange:{bg:'bg-amber-500/10',tx:'text-amber-400',sol:'bg-amber-500',gr:'from-amber-500 to-amber-600',rg:'ring-amber-500/30'},red:{bg:'bg-red-500/10',tx:'text-red-400',sol:'bg-red-500',gr:'from-red-500 to-red-600',rg:'ring-red-500/30'},cyan:{bg:'bg-cyan-500/10',tx:'text-cyan-400',sol:'bg-cyan-500',gr:'from-cyan-500 to-cyan-600',rg:'ring-cyan-500/30'}};
+
+const mch=(d,h)=>{const m=Math.max(...d);return'<div class="mc">'+d.map(v=>'<div style="height:'+(v/m*100)+'%;background:'+h+'35;flex:1;border-radius:2px 2px 0 0;min-width:4px"></div>').join('')+'</div>'};
+
+function clock(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}
+setInterval(clock,1000);clock();
+
+function nav(s){['dash','agt','log'].forEach(x=>{document.getElementById('s-'+x).classList.add('hidden');document.getElementById('t-'+x).classList.remove('ta')});document.getElementById('s-'+s).classList.remove('hidden');document.getElementById('t-'+s).classList.add('ta')}
+function om(id){document.getElementById(id).style.display='flex'}
+function cm(id){document.getElementById(id).style.display='none'}
+
+function showInfo(k){
+const a=AG[k],c=CC[a.cl];
+const met=Object.entries(a.mt).map(([k,v])=>'<div class="gl2 rounded-lg p-3"><p class="text-[10px] text-gray-500 mono uppercase tracking-wider">'+k+'</p><p class="text-lg font-bold '+c.tx+'">'+v+'</p></div>').join('');
+const steps=a.hw.map((s,i)=>'<div class="flex gap-3 items-start"><div class="w-6 h-6 rounded-full '+c.bg+' '+c.tx+' flex items-center justify-center shrink-0 text-xs font-bold mono">'+(i+1)+'</div><p class="text-sm text-gray-300">'+s+'</p></div>').join('');
+document.getElementById('mib').innerHTML='<div class="flex items-center gap-3 mb-5"><div class="w-11 h-11 rounded-xl bg-gradient-to-br '+c.gr+' flex items-center justify-center text-white">'+a.ic+'</div><div><h3 class="text-lg font-bold text-white">'+a.nm+'</h3><div class="flex items-center gap-2"><span class="dot"></span><span class="text-xs text-emerald-400">Online</span></div></div></div><p class="text-sm text-gray-400 mb-5 leading-relaxed">'+a.ds+'</p><h4 class="text-[10px] font-semibold text-gray-600 mono uppercase tracking-[.15em] mb-3">Performance Metrics</h4><div class="grid grid-cols-2 gap-2 mb-5">'+met+'</div><h4 class="text-[10px] font-semibold text-gray-600 mono uppercase tracking-[.15em] mb-3">How This Agent Works</h4><div class="space-y-3 mb-5">'+steps+'</div><h4 class="text-[10px] font-semibold text-gray-600 mono uppercase tracking-[.15em] mb-3">Weekly Activity</h4>'+mch(a.ch,a.hx);
+om('mi');
+}
+
+let busy=false;
+function showSim(k){
+const a=AG[k],c=CC[a.cl];
+const btns=a.sm.map((s,i)=>'<button onclick="runSim(\''+k+'\','+i+')" class="sbtn px-3 py-2 text-xs rounded-lg gl2 text-gray-400 hover:text-white transition text-left" id="sb-'+i+'"><span class="font-medium">'+s.t+'</span></button>').join('');
+document.getElementById('msb').innerHTML='<div class="flex items-center gap-3 mb-5"><div class="w-11 h-11 rounded-xl bg-gradient-to-br '+c.gr+' flex items-center justify-center text-white">'+a.ic+'</div><div><h3 class="text-lg font-bold text-white">'+a.nm+'</h3><p class="text-[10px] text-gray-500 mono tracking-wider">SIMULATION RUNNER</p></div></div><h4 class="text-[10px] font-semibold text-gray-600 mono uppercase tracking-[.15em] mb-3">Select a Scenario</h4><div class="flex flex-wrap gap-2 mb-5">'+btns+'</div><div id="sout" class="space-y-3"></div>';
+om('ms');
+}
+
+async function runSim(k,i){
+if(busy)return;busy=true;
+const a=AG[k],s=a.sm[i],c=CC[a.cl],out=document.getElementById('sout');
+document.querySelectorAll('.sbtn').forEach(b=>{b.classList.remove('ring-2',c.rg)});
+document.getElementById('sb-'+i).classList.add('ring-2',c.rg);
+out.innerHTML='<div class="gl2 rounded-lg p-4 fu"><p class="text-[10px] text-gray-500 mono uppercase tracking-wider mb-1">INCOMING REQUEST</p><p class="text-sm text-white mt-1">'+s.q+'</p></div>';
+const sc=document.createElement('div');sc.className='gl2 rounded-lg p-4 fu';
+sc.innerHTML='<p class="text-[10px] text-gray-500 mono uppercase tracking-wider mb-2">AGENT PROCESSING</p><div id="stl" class="space-y-2"></div>';
+out.appendChild(sc);
+const sl=document.getElementById('stl');
+for(const step of s.st){
+await new Promise(r=>setTimeout(r,400+Math.random()*500));
+const d=document.createElement('div');d.className='flex items-center gap-2 fu';
+d.innerHTML='<div class="w-1.5 h-1.5 rounded-full '+c.sol+' pd"></div><code class="text-xs '+c.tx+' mono">'+step+'</code>';
+sl.appendChild(d);sc.scrollTop=sc.scrollHeight;
+}
+await new Promise(r=>setTimeout(r,400));
+const re=document.createElement('div');re.className='gl2 rounded-lg p-4 fu';
+re.style.borderLeft='3px solid '+a.hx;
+re.innerHTML='<p class="text-[10px] text-gray-500 mono uppercase tracking-wider mb-2">AGENT RESPONSE</p><pre class="text-sm text-gray-200 whitespace-pre-wrap" style="font-family:DM Sans,system-ui;line-height:1.6">'+s.r+'</pre>';
+out.appendChild(re);
+const bd=document.createElement('div');bd.className='fu mt-2';
+bd.innerHTML='<div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full '+c.bg+' '+c.tx+' text-xs font-medium"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Simulation complete \u2014 '+s.st.length+' steps</div>';
+out.appendChild(bd);
+busy=false;
+}
+
+function render(){
+let ct=0;const tgt=9428,el=document.getElementById('ctr');
+(function u(){ct+=Math.ceil(tgt/70);if(ct>=tgt){el.textContent=tgt.toLocaleString();return}el.textContent=Math.floor(ct).toLocaleString();requestAnimationFrame(u)})();
+
+document.getElementById('dash-cards').innerHTML=Object.values(AG).map(a=>{
+const c=CC[a.cl],m=Object.entries(a.mt)[0];
+return'<div class="ch gl rounded-xl p-4 cursor-pointer '+a.gw+'" onclick="nav(\'agt\')"><div class="flex items-center justify-between mb-3"><div class="w-9 h-9 rounded-lg bg-gradient-to-br '+c.gr+' flex items-center justify-center text-white">'+a.ic+'</div><span class="dot"></span></div><h3 class="text-sm font-semibold text-white mb-1">'+a.sn+' Agent</h3><p class="text-xs text-gray-500 mb-3" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">'+a.ds+'</p><div class="flex items-end justify-between"><div><p class="text-[9px] text-gray-600 mono uppercase">'+m[0]+'</p><p class="text-lg font-bold '+c.tx+'">'+m[1]+'</p></div><div class="w-20">'+mch(a.ch,a.hx)+'</div></div></div>'
+}).join('');
+
+document.getElementById('dash-act').innerHTML='<div class="divide-y divide-white/5">'+ACT.slice(0,10).map(i=>{
+const a=AG[i.a],c=CC[a.cl],ic=i.s==='success'?'\u2705':i.s==='warning'?'\u26a0\ufe0f':'\u2139\ufe0f';
+return'<div class="flex items-center gap-3 px-4 py-3 hover:bg-white/[.02] transition"><div class="w-7 h-7 rounded-lg '+c.bg+' flex items-center justify-center '+c.tx+' shrink-0" style="transform:scale(.85)">'+a.ic+'</div><div class="flex-1 min-w-0"><p class="text-sm text-gray-300 truncate">'+i.x+'</p><p class="text-[10px] text-gray-600 mono">'+a.sn+'</p></div><div class="text-right shrink-0"><p class="text-[10px] text-gray-500">'+i.t+'</p><p class="text-xs">'+ic+'</p></div></div>'
+}).join('')+'</div>';
+
+document.getElementById('agt-cards').innerHTML=Object.values(AG).map(a=>{
+const c=CC[a.cl];
+const met=Object.entries(a.mt).map(([k,v])=>'<div><p class="text-[9px] text-gray-600 mono uppercase">'+k+'</p><p class="text-sm font-semibold '+c.tx+'">'+v+'</p></div>').join('');
+const tags=a.sm.map(s=>'<span class="inline-block px-2 py-0.5 text-[10px] rounded '+c.bg+' '+c.tx+'">'+s.t+'</span>').join(' ');
+return'<div class="ch gl rounded-2xl p-5 '+a.gw+'"><div class="flex items-center gap-3 mb-4"><div class="w-11 h-11 rounded-xl bg-gradient-to-br '+c.gr+' flex items-center justify-center text-white">'+a.ic+'</div><div><h3 class="text-base font-bold text-white">'+a.nm+'</h3><div class="flex items-center gap-2"><span class="dot"></span><span class="text-xs text-emerald-400">Online</span></div></div></div><p class="text-sm text-gray-400 mb-4 leading-relaxed">'+a.ds+'</p><div class="grid grid-cols-2 gap-3 mb-4">'+met+'</div><div class="mb-4"><p class="text-[9px] text-gray-600 mono uppercase mb-2">Weekly Trend</p>'+mch(a.ch,a.hx)+'</div><div class="mb-5"><p class="text-[9px] text-gray-600 mono uppercase mb-2">Scenarios</p><div class="flex flex-wrap gap-1">'+tags+'</div></div><div class="flex gap-2"><button onclick="showInfo(\''+a.id+'\' )" class="flex-1 px-3 py-2.5 rounded-xl gl2 text-sm font-medium text-gray-400 hover:text-white hover:bg-white/10 transition flex items-center justify-center gap-2"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Agent Info</button><button onclick="showSim(\''+a.id+'\' )" class="flex-1 px-3 py-2.5 rounded-xl bg-gradient-to-r '+c.gr+' text-sm font-medium text-white hover:opacity-90 transition flex items-center justify-center gap-2 shadow-lg"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Run Sim</button></div></div>'
+}).join('');
+
+document.getElementById('loglist').innerHTML=ACT.map(i=>{
+const a=AG[i.a],c=CC[a.cl];
+const sc={success:'text-emerald-400',warning:'text-amber-400',info:'text-blue-400'};
+const si={success:'\u25cf',warning:'\u25b2',info:'\u25c6'};
+return'<div class="le flex items-center gap-2 p-2.5 rounded-lg hover:bg-white/[.02] transition" data-s="'+i.s+'"><span class="text-xs '+sc[i.s]+'">'+si[i.s]+'</span><div class="w-5 h-5 rounded '+c.bg+' flex items-center justify-center '+c.tx+' shrink-0" style="transform:scale(.75)">'+a.ic+'</div><span class="text-[10px] font-medium '+c.tx+' w-14 shrink-0 mono">'+a.sn+'</span><span class="text-xs text-gray-300 flex-1 truncate">'+i.x+'</span><span class="text-[10px] text-gray-600 shrink-0 mono">'+i.t+'</span></div>'
+}).join('');
+}
+
+function filt(type){document.querySelectorAll('.le').forEach(e=>{e.style.display=(type==='all'||e.dataset.s===type)?'flex':'none'})}
+document.addEventListener('DOMContentLoaded',render);
+</script>
+</body>
+</html>
